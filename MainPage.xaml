@@ -63,5 +63,8 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        <Button Text="Load GitHub Items"
+        Clicked="OnLoadItemsClicked" />
+
     </VerticalStackLayout>
 </ContentPage>

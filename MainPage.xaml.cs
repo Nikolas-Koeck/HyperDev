@@ -1,11 +1,16 @@
-﻿namespace HyperDev;
+﻿using HyperDev.src.Services;
+
+namespace HyperDev;
 
 public partial class MainPage : ContentPage {
     int count = 0;
-
+    GitHubProjectService _service;
     public MainPage()
     {
         InitializeComponent();
+
+        // Resolve the registered service from the app service provider (no hard-coded token).
+        _service = MauiProgram.Services.GetRequiredService<GitHubProjectService>();
     }
 
 
@@ -43,6 +48,18 @@ public partial class MainPage : ContentPage {
             // force UI update (simple way)
             var index = vm.Slots.IndexOf(slot);
             vm.Slots[index] = slot;
+        }
+    }
+
+    private async void OnLoadItemsClicked(object sender, EventArgs e)
+    {
+        var items = await _service.GetProjectItemsAsync(
+            organization: "simon-hegele",
+            projectNumber: 14);
+
+        foreach(var item in items)
+        {
+            Console.WriteLine($"{item.Title} ({item.ContentType})");
         }
     }
 
