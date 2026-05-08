@@ -1,20 +1,13 @@
-src\Services\IGitService.cs
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-
 namespace HyperDev.src.Services;
 
-public class GitResult
-{
+public class GitResult {
     public int ExitCode { get; set; }
     public string Output { get; set; } = string.Empty;
     public string Error { get; set; } = string.Empty;
     public bool Success => ExitCode == 0;
-}   
+}
 
-public interface IGitService
-{
+public interface IGitService {
     /// <summary>
     /// Runs a raw git command (e.g. "status", "log --oneline") and returns outputs.
     /// </summary>
