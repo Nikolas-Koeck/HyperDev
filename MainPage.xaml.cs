@@ -7,6 +7,11 @@ namespace HyperDev;
 public partial class MainPage : ContentPage {
     ProjectDetailViewModel projectDetailViewModel;
     GitHubProjectView projectDetailView;
+
+    // Added fields for the Git view
+    GitContentViewModel gitContentViewModel;
+    GitContentView gitContentView;
+
     public MainPage()
     {
         InitializeComponent();
@@ -17,6 +22,12 @@ public partial class MainPage : ContentPage {
 
         rootLayout.Children.Add(projectDetailView);
 
+        // Create and add the GitContentView using the IGitService from DI
+        var gitService = MauiProgram.Services.GetRequiredService<IGitService>();
+        this.gitContentViewModel = new GitContentViewModel(gitService);
+        this.gitContentView = new GitContentView(gitContentViewModel);
+
+        rootLayout.Children.Add(gitContentView);
     }
 
     private void OnDragStarting(object sender, DragStartingEventArgs e)

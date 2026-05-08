@@ -9,7 +9,7 @@
         <local:MainViewModel />
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout x:Name="rootLayout" Padding="20" Spacing="20">
+    <VerticalStackLayout x:Name="rootLayout" Padding="20" Spacing="20" HorizontalOptions="FillAndExpand" >
 
         <!-- SOURCE GRID -->
         <Label Text="Drag Features" FontAttributes="Bold"/>

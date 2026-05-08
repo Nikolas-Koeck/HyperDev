@@ -30,9 +30,7 @@ public sealed class GitContentViewModel : INotifyPropertyChanged {
     public GitContentViewModel(IGitService gitService)
     {
         _gitService = gitService ?? throw new ArgumentNullException(nameof(gitService));
-        /*
-        RefreshCommand = new Command(async () => await ExecuteSafeAsync(RefreshAsync));
-        */
+        RefreshCommand = new Command(async () => await ExecuteSafeAsync(() => RefreshAsync()));
         CheckoutCommand = new Command<string>(async branch => await ExecuteSafeAsync(() => CheckoutAsync(branch)));
         CreateBranchCommand = new Command(async () => await ExecuteSafeAsync(CreateBranchAsync));
         CommitCommand = new Command(async () => await ExecuteSafeAsync(CommitAsync));
@@ -140,7 +138,7 @@ public sealed class GitContentViewModel : INotifyPropertyChanged {
         }
     }
 
-    private async Task CheckoutAsync(string branch)
+    public async Task CheckoutAsync(string branch)
     {
         if(string.IsNullOrWhiteSpace(RepositoryPath) || string.IsNullOrWhiteSpace(branch))
         {
@@ -165,7 +163,7 @@ public sealed class GitContentViewModel : INotifyPropertyChanged {
         }
     }
 
-    private async Task CreateBranchAsync()
+    public async Task CreateBranchAsync()
     {
         if(string.IsNullOrWhiteSpace(RepositoryPath) || string.IsNullOrWhiteSpace(NewBranchName))
         {
@@ -194,7 +192,7 @@ public sealed class GitContentViewModel : INotifyPropertyChanged {
         }
     }
 
-    private async Task CommitAsync()
+    public async Task CommitAsync()
     {
         if(string.IsNullOrWhiteSpace(RepositoryPath) || string.IsNullOrWhiteSpace(CommitMessage))
         {
@@ -223,7 +221,7 @@ public sealed class GitContentViewModel : INotifyPropertyChanged {
         }
     }
 
-    private async Task PushAsync()
+    public async Task PushAsync()
     {
         if(string.IsNullOrWhiteSpace(RepositoryPath))
         {
@@ -247,7 +245,7 @@ public sealed class GitContentViewModel : INotifyPropertyChanged {
         }
     }
 
-    private async Task PullAsync()
+    public async Task PullAsync()
     {
         if(string.IsNullOrWhiteSpace(RepositoryPath))
         {
