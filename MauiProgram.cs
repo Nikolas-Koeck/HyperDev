@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using HyperDev.src.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace HyperDev;
@@ -37,6 +38,10 @@ public static class MauiProgram {
             System.Diagnostics.Debug.WriteLine($"GitHub token loaded");
             return new src.Services.GitHubProjectService(httpClient, token);
         });
+
+        // Register Git service for DI so ViewModels and pages can use it:
+        // Use AddSingleton so the logger injected is reused; change lifetime if you prefer scoped/transient behavior.
+        builder.Services.AddSingleton<IGitService, GitService>();
 
         var app = builder.Build();
 
