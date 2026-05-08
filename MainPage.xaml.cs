@@ -1,18 +1,23 @@
 ﻿using HyperDev.src.Services;
+using HyperDev.src.Viewmodels;
+using HyperDev.src.Views;
 
 namespace HyperDev;
 
 public partial class MainPage : ContentPage {
-    int count = 0;
-    GitHubProjectService _service;
+    ProjectDetailViewModel projectDetailViewModel;
+    GitHubProjectView projectDetailView;
     public MainPage()
     {
         InitializeComponent();
 
-        // Resolve the registered service from the app service provider (no hard-coded token).
-        _service = MauiProgram.Services.GetRequiredService<GitHubProjectService>();
-    }
+        var githubService = MauiProgram.Services.GetRequiredService<GitHubProjectService>();
+        this.projectDetailViewModel = new ProjectDetailViewModel(githubService, "simon-hegele", 14);
+        this.projectDetailView = new GitHubProjectView(projectDetailViewModel);
 
+        rootLayout.Children.Add(projectDetailView);
+
+    }
 
     private void OnDragStarting(object sender, DragStartingEventArgs e)
     {
@@ -24,8 +29,6 @@ public partial class MainPage : ContentPage {
             e.Data.Text = feature.Name;
         }
     }
-
-
 
     private async void OnDrop(object sender, DropEventArgs e)
     {
@@ -51,20 +54,10 @@ public partial class MainPage : ContentPage {
         }
     }
 
-    private async void OnLoadItemsClicked(object sender, EventArgs e)
-    {
-        var items = await _service.GetProjectItemsAsync(
-            organization: "simon-hegele",
-            projectNumber: 14);
-
-        foreach(var item in items)
-        {
-            Console.WriteLine($"{item.Title} ({item.ContentType})");
-        }
-    }
 
     private void DropGestureRecognizer_DragOver(object sender, DragEventArgs e)
     {
         e.AcceptedOperation = DataPackageOperation.Copy;
     }
+
 }

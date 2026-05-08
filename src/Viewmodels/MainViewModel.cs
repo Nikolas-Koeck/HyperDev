@@ -1,3 +1,4 @@
+using HyperDev.src.Services;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 
@@ -8,8 +9,15 @@ namespace HyperDev {
         public Feature SelectedFeature { get; set; }
         public ICommand AssignCommand { get; }
 
+        public ICommand LoadProjectCommand { get; }
+
+        private readonly GitHubProjectService? _gitHubProjectService;
+
+
         public MainViewModel()
         {
+            _gitHubProjectService = MauiProgram.Services.GetRequiredService<GitHubProjectService>();
+
             Features = new ObservableCollection<Feature>
             {
                 new Feature { Name = "Feature 1" },
@@ -23,6 +31,7 @@ namespace HyperDev {
             };
 
             AssignCommand = new Command<Slot>(AssignFeatureToSlot);
+
         }
 
         private void AssignFeatureToSlot(Slot slot)
@@ -32,6 +41,7 @@ namespace HyperDev {
                 slot.AssignedFeature = SelectedFeature;
             }
         }
+
     }
 
     public class Feature {

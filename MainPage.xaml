@@ -2,13 +2,14 @@
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
     xmlns:local="clr-namespace:HyperDev"
+    xmlns:views="clr-namespace:HyperDev.src.Views"
     x:Class="HyperDev.MainPage">
 
     <ContentPage.BindingContext>
         <local:MainViewModel />
     </ContentPage.BindingContext>
 
-    <VerticalStackLayout Padding="20" Spacing="20">
+    <VerticalStackLayout x:Name="rootLayout" Padding="20" Spacing="20">
 
         <!-- SOURCE GRID -->
         <Label Text="Drag Features" FontAttributes="Bold"/>
@@ -63,8 +64,6 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Text="Load GitHub Items"
-        Clicked="OnLoadItemsClicked" />
-
+        
     </VerticalStackLayout>
 </ContentPage>
