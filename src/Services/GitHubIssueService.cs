@@ -38,7 +38,9 @@ public class GitHubProjectService {
         var list = restItems.Select(item =>
         {
             string title = "(No title)";
-            string? urlValue = null;
+            string urlValue = null;
+            string? creatorName = null;
+            string? itemLink = null;
 
             if(item.Content.HasValue && item.Content.Value.ValueKind == JsonValueKind.Object)
             {
@@ -56,12 +58,27 @@ public class GitHubProjectService {
                     urlValue = nid.GetString();
             }
 
+            // Extract creator name (prefer "name", fallback to "login")
+            if(item.Creator.HasValue && item.Creator.Value.ValueKind == JsonValueKind.Object)
+            {
+                var c = item.Creator.Value;
+                if(c.TryGetProperty("name", out var nameProp) && nameProp.ValueKind == JsonValueKind.String)
+                    creatorName = nameProp.GetString();
+                else if(c.TryGetProperty("login", out var loginProp) && loginProp.ValueKind == JsonValueKind.String)
+                    creatorName = loginProp.GetString();
+            }
+
+            // Prefer API-provided item_url if present, otherwise fallback to the content url we discovered
+            itemLink = string.IsNullOrEmpty(item.ItemUrl) ? urlValue : item.ItemUrl;
+
             return new ProjectItem
             {
                 Id = item.Id.ToString(),
                 Title = title,
                 Url = urlValue,
-                ContentType = item.ContentType
+                ContentType = item.ContentType,
+                CreatorName = creatorName,
+                ItemUrl = itemLink
             };
         }).ToList();
 

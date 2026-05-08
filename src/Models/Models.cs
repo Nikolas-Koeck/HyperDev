@@ -60,6 +60,10 @@ public class ProjectItem {
     public string Title { get; set; } = string.Empty;
     public string? Url { get; set; }
     public string? ContentType { get; set; }
+
+    // New properties: creator's display name (or login) and a link to the item (API item_url or fallback content url)
+    public string? CreatorName { get; set; }
+    public string? ItemUrl { get; set; }
 }
 
 public class GraphQLResponse {
